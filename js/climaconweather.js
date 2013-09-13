@@ -6,24 +6,26 @@ function roundNumber(number, digits) {
             return rndedNum;
 };
 
+var code=800;
+var windSpeed = roundNumber(2.58, 1);
+var windDirection = 276;
+var rawTemp = 306.15;
+var Ctemp = rawTemp - 273.15;
+var cloudCover = 90;
+var precipitationPer3Hours = 3;
+
 /*the real magic*/
 
 $(document).ready(function() {
 
-	//$.getJSON('http://api.openweathermap.org/data/2.5/weather?q=London', function(data) {
-		//var code = data.weather.id;
-		var code = 800;
-		//var windSpeed = roundNumber(data.wind.speed, 1);
-		var windSpeed = roundNumber(2.58, 1);
-		//var windDirection = data.wind.deg;
-		var windDirection = 276;
-		//var rawTemp = data.main.temp;
-		var rawTemp = 306.15;
-		var Ctemp = rawTemp - 273.15;
-		//var cloudCover = data.clouds.all;
-		var cloudCover = 90;
-		//var precipitationPer3Hours = data.rain.3h;
-		var precipitationPer3Hours = 3;
+	$.getJSON('http://api.openweathermap.org/data/2.5/weather?q=London&APPID=b989a520f5924fda6c481534f0a17f7b', function(data) {
+		code = data.weather.id;
+		windSpeed = roundNumber(data.wind.speed, 1);
+		windDirection = data.wind.deg;
+		rawTemp = data.main.temp;
+		Ctemp = rawTemp - 273.15;
+		cloudCover = data.clouds.all;
+		//precipitationPer3Hours = data.rain.3h;
 
 		switch(code) {
 			case (200 || 201 || 202 || 210 || 211 || 212 || 221 || 230 || 231 || 232): //thunderstorms
@@ -227,7 +229,7 @@ $(document).ready(function() {
 				document.getElementById('icon').innerHTML = 'Loading...';
 				break;
 		}
-	//});
+	});
 	/* render temperature */
 
 	document.getElementById('temperature').innerHTML = '<span class="numbers">' + Ctemp + '<span class="unit">&deg;C</span></span>';
